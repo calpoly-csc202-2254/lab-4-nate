@@ -65,9 +65,9 @@ class frozenBinarySearchTree:
                     if l == None and r == None:
                         return None
                     elif l == None: 
-                        return r
+                        return Node(r.val, None, r.right)
                     elif r == None:
-                        return l
+                        return Node(l.val, l.left, None)
                     else:
                         return Node(self.rightmost(l), self.remove_rightmost(l), r)
                 elif self.comes_before(v, val):
@@ -85,7 +85,7 @@ class frozenBinarySearchTree:
     # Remove rightmost node of sub tree
     def remove_rightmost(self, tree: BinTree) -> BinTree:
         if tree.right == None:
-            return None
+            return tree.left
         else:
             return Node(tree.val, tree.left, self.remove_rightmost(tree.right))
 
@@ -121,6 +121,16 @@ class TestCase(unittest.TestCase):
         self.assertEqual(tr.delete(10), Node(5,Node(3,Node(2,None,None),None),Node(7,None,None)))
         self.assertEqual(tr.delete(3), Node(5,Node(2,None,None),Node(10,Node(7,None,None),None)))
         self.assertEqual(tr.delete(5), Node(3,Node(2,None,None),Node(10,Node(7,None,None),None)))
+        tr = frozenBinarySearchTree(tr.insert(4), lambda a, b : a > b)
+        tr = frozenBinarySearchTree(tr.insert(11), lambda a, b : a > b)
+        self.assertEqual(tr.tree, Node(5,Node(3,Node(2,None,None),Node(4, None, None)),Node(10,Node(7,None,None),Node(11,None,None))))
+        self.assertEqual(tr.delete(7), Node(5,Node(3,Node(2,None,None),Node(4, None, None)),Node(10, None,Node(11,None,None))))
+
+        self.assertEqual(tr.delete(5), Node(4,
+                                            Node(3,Node(2,None,None),None),
+                                            Node(10,Node(7,None,None),Node(11,None,None))))
+
+        
 
 
 
